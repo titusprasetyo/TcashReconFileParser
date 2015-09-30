@@ -65,7 +65,7 @@ public class BMRStatement extends BaseModel {
 		this.referenceNo = referenceNo;
 	}
 
-	@PositionalField(initialPosition = 160, finalPosition = 178)
+	@PositionalField(initialPosition = 165, finalPosition = 178)
 	public BigDecimal getDebit() {
 		return debit;
 	}

@@ -37,7 +37,8 @@ public class ParseDao {
 
 	private void init() throws SQLException, NamingException {
 		Context ctx = new InitialContext();
-		dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/local");
+		dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/tsel_tunai");
+		//dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/local");
 		connection = dataSource.getConnection();
 	}
 

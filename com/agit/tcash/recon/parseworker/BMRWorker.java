@@ -63,23 +63,26 @@ public class BMRWorker {
 		// start reading line by line
 		try {
 			while ((line = textFileReader.readLine()) != null) {
-				try {
-					// parse using ffpojo
-					bmr = ffpojo.createFromText(BMRStatement.class, line);
-					bmr.setDtStamp();
-					// output += bmr.getDescription() + "\n";
-					// start save to database for parsed data
+				if (!"".equalsIgnoreCase(line)) {
 					try {
-						dao = new ParseDao();
-						if (bmr.getDebit().compareTo(BigDecimal.ZERO) != 0)
+						// parse using ffpojo
+						bmr = ffpojo.createFromText(BMRStatement.class, line);
+						bmr.setDtStamp();
+						// output += bmr.getDescription() + "\n";
+						// start save to database for parsed data
+						try {
+							dao = new ParseDao();
+							// if (bmr.getDebit().compareTo(BigDecimal.ZERO) !=
+							// 0)
 							dao.saveToDb(bmr, "bmr", guuid);
+						} catch (Exception e) {
+							output += "Error saving to db for line " + i + " : " + e.getMessage();
+						}
 					} catch (Exception e) {
-						output += "Error saving to db for line " + i + " : " + e.getMessage();
+						output += "Error parsing line " + i + " : " + e.getMessage();
 					}
-				} catch (Exception e) {
-					output += "Error parsing line " + i + " : " + e.getMessage();
+					i++;
 				}
-				i++;
 			}
 		} catch (Exception e) {
 			output += "Error reading line " + i + " : " + e.getMessage();
