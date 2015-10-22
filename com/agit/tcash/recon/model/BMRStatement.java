@@ -27,6 +27,7 @@ public class BMRStatement extends BaseModel {
 	}
 
 	public void setDateTime(String dateTime) throws ParseException {
+		//dateTime = dateTime.substring(14, 23);
 		this.dateTime = sdf.parse(dateTime);
 	}
 
@@ -40,6 +41,7 @@ public class BMRStatement extends BaseModel {
 	}
 
 	public void setValueDate(String valueDate) throws ParseException {
+		//valueDate = valueDate.substring(24, 33);
 		this.valueDate = sdf.parse(valueDate);
 	}
 
@@ -49,6 +51,7 @@ public class BMRStatement extends BaseModel {
 	}
 
 	public void setDescription(String description) {
+		//description = description.substring(38, 142);
 		this.description = description;
 	}
 
@@ -62,6 +65,7 @@ public class BMRStatement extends BaseModel {
 	}
 
 	public void setReferenceNo(String referenceNo) {
+		//referenceNo = referenceNo.substring(143, 159);
 		this.referenceNo = referenceNo;
 	}
 
@@ -75,7 +79,9 @@ public class BMRStatement extends BaseModel {
 	}
 
 	public void setDebit(String debit) {
-		this.debit = BigDecimal.valueOf(new Double(debit));
+		//debit = debit.substring(165, 178);
+		//this.debit = BigDecimal.valueOf(new Double(debit));
+		this.debit = new BigDecimal(debit);
 	}
 
 	@PositionalField(initialPosition = 179, finalPosition = 194)
@@ -88,7 +94,8 @@ public class BMRStatement extends BaseModel {
 	}
 
 	public void setCredit(String credit) {
-		this.credit = BigDecimal.valueOf(new Double(credit));
+		//this.credit = BigDecimal.valueOf(new Double(credit));
+		this.credit = new BigDecimal(credit);
 	}
 
 	private Date dateTime;
@@ -97,5 +104,5 @@ public class BMRStatement extends BaseModel {
 	private String referenceNo;
 	private BigDecimal debit;
 	private BigDecimal credit;
-	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 }

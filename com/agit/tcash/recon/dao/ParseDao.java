@@ -51,6 +51,8 @@ public class ParseDao {
 		rs = pstmt.executeQuery();
 		if (rs.next())
 			retval = true;
+		pstmt.close();
+		connection.close();
 		return retval;
 	}
 
@@ -80,7 +82,7 @@ public class ParseDao {
 		init();
 		if (flag == "bni") {
 			BNIStatement bni = (BNIStatement) model;
-			query = "UPDATE AG_T_BANK_STATEMENT SET BATCHID=?, BANKID=?, TXDT=?, JOURNALID=?, DESCRIPTION=?, TXTYPE=?, AMOUNT=?, RECONSTATUS=?, DTSTMP=? WHERE TXDT=? AND JOURNALID=? AND AMOUNT=?";
+			query = "UPDATE AG_T_BANK_STATEMENT SET BATCHID=?, BANKID=?, TXDT=?, JOURNALID=?, DESCRIPTION=?, TXTYPE=?, AMOUNT=?, DTSTMP=? WHERE TXDT=? AND JOURNALID=? AND AMOUNT=?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, uuid);
 			pstmt.setString(2, flag);
@@ -89,11 +91,11 @@ public class ParseDao {
 			pstmt.setString(5, bni.getDescription());
 			pstmt.setString(6, bni.getDbcr());
 			pstmt.setBigDecimal(7, bni.getAmount());
-			pstmt.setInt(8, 0);
-			pstmt.setTimestamp(9, new java.sql.Timestamp(bni.getDtStamp().getTime()));
-			pstmt.setDate(10, new java.sql.Date(bni.getPostDate().getTime()));
-			pstmt.setString(11, bni.getJournalNo());
-			pstmt.setBigDecimal(12, bni.getAmount());
+			//pstmt.setInt(8, 0);
+			pstmt.setTimestamp(8, new java.sql.Timestamp(bni.getDtStamp().getTime()));
+			pstmt.setDate(9, new java.sql.Date(bni.getPostDate().getTime()));
+			pstmt.setString(10, bni.getJournalNo());
+			pstmt.setBigDecimal(11, bni.getAmount());
 		} else {
 			BMRStatement bmr = (BMRStatement) model;
 			String DbCr = "";
@@ -106,20 +108,20 @@ public class ParseDao {
 				amount = bmr.getDebit();
 				DbCr = "D";
 			}
-			query = "UPDATE AG_T_BANK_STATEMENT SET BATCHID=?, BANKID=?, TXDT=?, JOURNALID=?, DESCRIPTION=?, TXTYPE=?, AMOUNT=?, RECONSTATUS=?, DTSTMP=? WHERE TXDT=? AND JOURNALID=? AND AMOUNT=?";
+			query = "UPDATE AG_T_BANK_STATEMENT SET BATCHID=?, BANKID=?, TXDT=?, JOURNALID=null, DESCRIPTION=?, TXTYPE=?, AMOUNT=?, DTSTMP=? WHERE TXDT=? AND TRIM(DESCRIPTION)=? AND AMOUNT=?";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, uuid);
 			pstmt.setString(2, flag);
 			pstmt.setDate(3, new java.sql.Date(bmr.getDateTime().getTime()));
-			pstmt.setString(4, bmr.getReferenceNo());
-			pstmt.setString(5, bmr.getDescription());
-			pstmt.setString(6, DbCr);
-			pstmt.setBigDecimal(7, amount);
-			pstmt.setInt(8, 0);
-			pstmt.setTimestamp(9, new java.sql.Timestamp(bmr.getDtStamp().getTime()));
-			pstmt.setDate(10, new java.sql.Date(bmr.getDateTime().getTime()));
-			pstmt.setString(11, bmr.getReferenceNo());
-			pstmt.setBigDecimal(12, amount);
+			//pstmt.setString(4, bmr.getReferenceNo());
+			pstmt.setString(4, bmr.getDescription());
+			pstmt.setString(5, DbCr);
+			pstmt.setBigDecimal(6, amount);
+			//pstmt.setInt(7, 0);
+			pstmt.setTimestamp(7, new java.sql.Timestamp(bmr.getDtStamp().getTime()));
+			pstmt.setDate(8, new java.sql.Date(bmr.getDateTime().getTime()));
+			pstmt.setString(9, bmr.getDescription().trim());
+			pstmt.setBigDecimal(10, amount);
 		}
 		rowAffected = pstmt.executeUpdate();
 		pstmt.close();
@@ -154,17 +156,17 @@ public class ParseDao {
 				amount = bmr.getDebit();
 				DbCr = "D";
 			}
-			query = "INSERT INTO AG_T_BANK_STATEMENT(BATCHID, BANKID, TXDT, JOURNALID, DESCRIPTION, TXTYPE, AMOUNT, RECONSTATUS, DTSTMP) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			query = "INSERT INTO AG_T_BANK_STATEMENT(BATCHID, BANKID, TXDT, DESCRIPTION, TXTYPE, AMOUNT, RECONSTATUS, DTSTMP) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 			pstmt = connection.prepareStatement(query);
 			pstmt.setString(1, uuid);
 			pstmt.setString(2, flag);
 			pstmt.setDate(3, new java.sql.Date(bmr.getDateTime().getTime()));
-			pstmt.setString(4, bmr.getReferenceNo());
-			pstmt.setString(5, bmr.getDescription());
-			pstmt.setString(6, DbCr);
-			pstmt.setBigDecimal(7, amount);
-			pstmt.setInt(8, 0);
-			pstmt.setTimestamp(9, new java.sql.Timestamp(bmr.getDtStamp().getTime()));
+			//pstmt.setString(4, bmr.getReferenceNo());
+			pstmt.setString(4, bmr.getDescription());
+			pstmt.setString(5, DbCr);
+			pstmt.setBigDecimal(6, amount);
+			pstmt.setInt(7, 0);
+			pstmt.setTimestamp(8, new java.sql.Timestamp(bmr.getDtStamp().getTime()));
 		}
 		pstmt.executeUpdate();
 		pstmt.close();

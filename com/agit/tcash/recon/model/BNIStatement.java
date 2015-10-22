@@ -88,7 +88,9 @@ public class BNIStatement extends BaseModel {
 	}
 
 	public void setAmount(String amount) {
-		this.amount = BigDecimal.valueOf(new Double(amount));
+		this.amount = new BigDecimal(amount);
+		//this.amount = BigDecimal.valueOf(new Double(amount));
+		//System.out.println("public void setAmount(String amount) : " + this.amount);
 	}
 
 	@DelimitedField(positionIndex = 7)
@@ -123,5 +125,5 @@ public class BNIStatement extends BaseModel {
 	private BigDecimal amount;
 	private String dbcr;
 	private BigDecimal balance;
-	private SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy hh.mm.ss");
+	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh.mm.ss");
 }

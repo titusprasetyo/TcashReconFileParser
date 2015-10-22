@@ -65,7 +65,7 @@ public class BNIWorker {
 			while ((line = textFileReader.readLine()) != null) {
 				if (!"".equalsIgnoreCase(line)) {
 					// start reading line >= 6 that contain statement data
-					if (i >= 6) {
+					if (i >= 5) {
 						tmp = line.split("\\|");
 						// the BNI file is inconsistent of field count
 						// when field count greater than 8, get 4 first field
